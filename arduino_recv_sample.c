@@ -16,8 +16,6 @@ int main(int argc, char const *argv[]) {
   struct termios oldtio, newtio;    /* シリアル通信設定 */
   int count;
 
-  memset(buf, '\0', 255);
-
   fd = open(SERIAL_PORT, O_RDWR);   /* デバイスをオープンする */
 
   // ioctl(fd, TCGETS, &oldtio);       /* 現在のシリアルポートの設定を待避させる */
@@ -53,6 +51,7 @@ int main(int argc, char const *argv[]) {
     ioctl(fd, FIONREAD, &count);
     printf("count: %d\n", count);
     if (count >= 3) {
+      memset(buf, '\0', sizeof(buf));
       read(fd, buf, sizeof(buf));
       printf("%s\n", buf);
     }
